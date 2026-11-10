@@ -1,7 +1,5 @@
 # Controle Financeiro
 
-API para cadastrar e consultar categorias e lançamentos financeiros. O projeto usa PHP e Slim.
-
 ## 1. O que precisa
 
 - PHP 7.4 ou PHP 8.0 a 8.5
