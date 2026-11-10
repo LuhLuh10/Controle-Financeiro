@@ -1,66 +1,89 @@
 # Controle Financeiro
 
-API REST de categorias e lançamentos, feita com PHP e Slim.
+API para cadastrar e consultar categorias e lançamentos financeiros. O projeto usa PHP e Slim.
 
-## Requisitos e configuração
+## 1. O que precisa
 
 - PHP 7.4 ou PHP 8.0 a 8.5
 - Composer
 
-Na pasta do projeto, instale as dependências:
+## 2. Instalar o projeto
+
+Abra um terminal na pasta do projeto e instale as dependências:
 
 ```sh
 composer install
 ```
 
-## Executar a API
+## 3. Iniciar a API
+
+Na pasta do projeto, execute:
 
 ```sh
 php -S localhost:8080 -t public
 ```
 
-A API fica disponível em `http://localhost:8080`. Os dados são armazenados em memória e voltam aos valores iniciais quando o servidor reinicia.
+A API estará disponível em `http://localhost:8080`. Deixe esse terminal aberto enquanto usa a API. Para parar o servidor, pressione `Ctrl+C`.
 
-## Executar os testes
+Os dados ficam em memória. Ao reiniciar o servidor, eles voltam aos valores iniciais.
 
-Em outro terminal, na pasta do projeto:
+## 4. Executar os testes
+
+Na pasta do projeto, execute:
 
 ```sh
 php testes/controleFinan.php
 ```
 
-Os testes criam e usam uma instância própria da aplicação no processo de teste; não iniciam o servidor nem alteram os dados do servidor em execução. Podem ser executados novamente com o mesmo resultado.
+Não é necessário iniciar a API para testar. O teste usa uma instância própria e não altera os dados do servidor. Ao terminar, mostra quantos testes passaram.
 
-## Endpoints
+## Endpoints disponíveis
 
-Requisições com corpo devem usar JSON e o cabeçalho `Content-Type: application/json`. As respostas, inclusive erros, são JSON.
+Requisições com dados devem estar em JSON e usar o cabeçalho `Content-Type: application/json`. As respostas, inclusive as de erro, também são JSON.
 
-| Método | Endpoint | Descrição |
+### Verificação da API
+
+| Método | Endereço | O que faz |
 | --- | --- | --- |
-| GET | `/status` | Verifica o estado da API. |
-| GET | `/categoria` | Lista categorias. |
-| GET | `/categoria/{id}` | Consulta uma categoria. |
-| POST | `/categoria` | Cadastra uma categoria (`nome`, `tipo`). |
-| PUT | `/categoria/{id}` | Atualiza uma categoria (`nome`, `tipo`). |
+| GET | `/status` | Verifica se a API está funcionando. |
+
+### Categorias
+
+| Método | Endereço | O que faz |
+| --- | --- | --- |
+| GET | `/categoria` | Lista as categorias. |
+| GET | `/categoria/{id}` | Consulta uma categoria pelo ID. |
+| POST | `/categoria` | Cadastra uma categoria com `nome` e `tipo`. |
+| PUT | `/categoria/{id}` | Atualiza `nome` e `tipo` da categoria. |
 | DELETE | `/categoria/{id}` | Exclui uma categoria. |
-| POST | `/lancamento` | Cadastra um lançamento (`descricao`, `valor`, `data`, `tipo`, `categoria`). |
-| GET | `/lancamentos` | Lista lançamentos; filtros opcionais: `dataInicial`, `dataFinal`, `categoria`, `tipo`. |
-| GET | `/lancamento/{id}` | Consulta um lançamento. |
-| PUT | `/lancamento/{id}` | Atualiza um lançamento, enviando os campos do cadastro. |
+
+### Lançamentos
+
+| Método | Endereço | O que faz |
+| --- | --- | --- |
+| POST | `/lancamento` | Cadastra um lançamento com `descricao`, `valor`, `data`, `tipo` e `categoria` (ID). |
+| GET | `/lancamentos` | Lista lançamentos. Pode filtrar por `dataInicial`, `dataFinal`, `categoria` e `tipo`. |
+| GET | `/lancamento/{id}` | Consulta um lançamento pelo ID. |
+| PUT | `/lancamento/{id}` | Atualiza os dados de um lançamento. |
 | DELETE | `/lancamento/{id}` | Exclui um lançamento. |
-| GET | `/saldo` | Consulta o saldo atual. |
-| GET | `/totais?dataInicial=AAAA-MM-DD&dataFinal=AAAA-MM-DD` | Consulta receitas e despesas no período. |
 
-O tipo de categoria e lançamento é `receita` ou `despesa`. A data deve usar o formato `AAAA-MM-DD`. Erros de validação retornam `422`; recursos inexistentes retornam `404`.
+O tipo deve ser `receita` ou `despesa`. A data deve usar o formato `AAAA-MM-DD`.
 
-## Histórico Git
+### Consultas financeiras
 
-O projeto já está em um repositório Git com histórico. Para registrar novas alterações:
+| Método | Endereço | O que faz |
+| --- | --- | --- |
+| GET | `/saldo` | Mostra receitas menos despesas. |
+| GET | `/totais?dataInicial=AAAA-MM-DD&dataFinal=AAAA-MM-DD` | Mostra receitas e despesas dentro do período. |
+
+Erros de validação retornam o status `422`. Quando um ID não existe, a API retorna `404`.
+
+## Histórico de alterações
+
+O projeto usa Git para guardar as alterações. Para ver o histórico, execute `git log --oneline`. Para salvar uma nova alteração:
 
 ```sh
 git add README.md src/app.php testes/controleFinan.php
-git commit -m "docs: registra instruções e endpoints da API"
+git commit -m "descreva a alteração"
 git push origin master
 ```
-
-Consulte os commits existentes com `git log --oneline`.
