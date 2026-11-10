@@ -27,6 +27,8 @@ A API estará disponível em `http://localhost:8080`. Deixe esse terminal aberto
 
 Os dados ficam em memória. Ao reiniciar o servidor, eles voltam aos valores iniciais.
 
+As categorias iniciais são `Compras` (ID 1, despesa) e `Contas` (ID 2, receita).
+
 ## 4. Executar os testes
 
 Na pasta do projeto, execute:
@@ -69,6 +71,11 @@ Requisições com dados devem estar em JSON e usar o cabeçalho `Content-Type: a
 
 O tipo deve ser `receita` ou `despesa`. A data deve usar o formato `AAAA-MM-DD`.
 
+Exemplos de filtros:
+
+- `GET /lancamentos?dataInicial=2023-01-01&dataFinal=2023-01-31`
+- `GET /lancamentos?categoria=1&tipo=despesa`
+
 ### Consultas financeiras
 
 | Método | Endereço | O que faz |
@@ -76,7 +83,7 @@ O tipo deve ser `receita` ou `despesa`. A data deve usar o formato `AAAA-MM-DD`.
 | GET | `/saldo` | Mostra receitas menos despesas. |
 | GET | `/totais?dataInicial=AAAA-MM-DD&dataFinal=AAAA-MM-DD` | Mostra receitas e despesas dentro do período. |
 
-Erros de validação retornam o status `422`. Quando um ID não existe, a API retorna `404`.
+Ao criar um item, a API retorna `201`. Nas consultas, atualizações e exclusões feitas com sucesso, retorna `200`. Dados inválidos retornam `422`; nome de categoria repetido retorna `400`; ID inexistente retorna `404`.
 
 ## Histórico de alterações
 
